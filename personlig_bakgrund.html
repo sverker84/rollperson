@@ -37,9 +37,10 @@
 			   contentType: "application/json",
 			   data: null,
 			   success: function(data) {
-				 console.log(data.id + " loaded !");
-				 console.log(data);
-				 $("#alder").val(data.value["alder"]);
+			    var rollperson = data["rows"]["value"];
+				 console.log(rollperson["_id"] + " loaded !");
+				 console.log(rollperson);
+				 $("#alder").val(rollperson["alder"]);
 			   }
 			  });
 		}
