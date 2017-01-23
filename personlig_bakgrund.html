@@ -37,7 +37,7 @@
 			   contentType: "application/json",
 			   data: null,
 			   success: function(data) {
-			    var rollperson = data["rows"]["value"];
+			    var rollperson = data.rows["value"];
 				 console.log(rollperson["_id"] + " loaded !");
 				 console.log(rollperson);
 				 $("#alder").val(rollperson["alder"]);
