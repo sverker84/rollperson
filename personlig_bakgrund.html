@@ -20,7 +20,7 @@
 			var rollperson = {"namn":$("#namn").val()};
 			  $.ajax({
 			   type: "POST",
-			   url: "http://www.cusdec.se:5984/rollpersoner/",
+			   url: "http://cors.io/?u=http://www.cusdec.se:5984/rollpersoner/",
 			   contentType: "application/json",
 			   data: JSON.stringify(rollperson),
 			   dataType: "json",
