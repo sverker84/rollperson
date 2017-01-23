@@ -16,8 +16,8 @@
 		 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/3.4.1/css/swiper.min.css">
 		<link rel="stylesheet" href="assets/css/swiper.css" />
 		<script>
-		function sparaNamn() {
-			var rollperson = {"namn":$("#namn").val()};
+		function sparaRollperson() {
+			var rollperson = {"namn":$("#namn").val(), "alder":$("#alder").val()};
 			  $.ajax({
 			   type: "POST",
 			   url: "https://www.cusdec.se:6984/rollpersoner/",
@@ -25,7 +25,22 @@
 			   data: JSON.stringify(rollperson),
 			   dataType: "json",
 			   success: function(data) {
-				 alert(data.id + " created !");
+				 console.log(data.id + " created !");
+			   }
+			  });
+		}
+		function laddaRollperson() {
+			var rollperson = {"namn":$("#namn").val()};
+			  $.ajax({
+			   type: "GET",
+			   url: "https://www.cusdec.se:6984/rollpersoner/",
+			   contentType: "application/json",
+			   data: JSON.stringify(rollperson),
+			   dataType: "json",
+			   success: function(data) {
+				 console.log(data.id + " loaded !");
+				 console.log(data);
+				 $("#alder").val(data.alder);
 			   }
 			  });
 		}
@@ -75,7 +90,9 @@
 							<h1>Personlig bakgrund</h1>
 							<form>
 							Namn: <input type="text" name="Namn" id="namn" /><br/>
-							<input type="submit" onclick="javascript:sparaNamn(); return false;"/>
+							Age: <input type="text" name="Age" id="alder" /><br/>
+							<input type="button" onclick="javascript:sparaRollperson(); return false;"/>
+							<input type="button" onclick="javascript:laddaRollperson(); return false;"/>
 							</form>
 						</div>
 					</div>
