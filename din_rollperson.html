@@ -16,47 +16,67 @@
 		 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/3.4.1/css/swiper.min.css">
 		<link rel="stylesheet" href="assets/css/swiper.css" />
 		<script src="assets/js/jquery.min.js"></script>
-			<script src="assets/js/jquery.couch.js"></script>
+		<script src="assets/js/jquery.couch.js"></script>
 		<script>
+			function login(user="", password="") {
+				var username, password;
+				if (user == "") {
+					username = $('#username').val();				
+				}
+				if (password == "") {
+					password = $('#password').val();
+				}
+				
+				$.couch.login({
+					name: username,
+					password: password,
+					success: function(data){
+						console.log(data);
+					},
+					error: function(status) {
+						console.log(status);
+					}
+				});
+			}				
+		
+			function getSession() {
+				$.couch.session({
+				success: function(data) {
+				        console.log(data);
+				    }
+				});
+			}
+		
+			function createUser() {
+				var username = $('#username').val();
+				var password = $('#password').val();
+				
+				var userDoc = {
+					_id: "org.couchdb.user:" + username,
+					name: username				
+				};
+				$.couch.signup(userDoc, password, {
+					success: function(data) {
+						if (data.ok == true)
+						{
+							console.log(data);
+							login();
+						}
+												
+					},
+					error: function(status) {
+						console.log(status);					
+					}
+				});
+						
+			}
 		
 			$( document ).ready(function() {
 				$.couch.urlPrefix = "https://www.cusdec.se:6984";
 				
-				$.couch.info({
-					success: function(data) {
-						console.log(data);					
-					}
-				});
+				
 			});	
 		
-		function sparaRollperson() {
-			var rollperson = {"namn":$("#namn").val(), "alder":$("#alder").val()};
-			  $.ajax({
-			   type: "POST",
-			   url: "https://www.cusdec.se:6984/rollpersoner/",
-			   contentType: "application/json",
-			   data: JSON.stringify(rollperson),
-			   dataType: "json",
-			   success: function(data) {
-				 console.log(data.id + " created !");
-			   }
-			  });
-		}
-		function laddaRollperson() {
-			var rollperson = {"namn":$("#namn").val()};
-			  $.ajax({
-			   type: "GET",
-			   url: "https://www.cusdec.se:6984/rollpersoner/_design/rollperson/_view/byName?key=\"" + $("#namn").val() + "\"",
-			   contentType: "application/json",
-			   data: null,
-			   success: function(data) {
-			    var rollperson = data.rows["value"];
-				 console.log(rollperson["_id"] + " loaded !");
-				 console.log(rollperson);
-				 $("#alder").val(rollperson["alder"]);
-			   }
-			  });
-		}
 		</script>
 	</head>
 	<body>
@@ -100,13 +120,14 @@
 				<!-- Main -->
 					<div id="main">
 						<div class="inner">
-							<h1>Personlig bakgrund</h1>
+							<h1>Din rollperson</h1>
 							<form>
-							Namn: <input type="text" name="Namn" id="namn" /><br/>
-							Age: <input type="text" name="Age" id="alder" /><br/>
-							<input type="button" value="Spara" onclick="javascript:sparaRollperson(); return false;">
-							<input type="button" value="Ladda" onclick="javascript:laddaRollperson(); return false;">
+							Login: <input type="text" name="username" id="username" /><br/>
+							Password: <input type="password" name="password" id="password" /><br/>
+							<input type="button" value="Registrera dig" onclick="javascript:createUser(); return false;">
+							<input type="button" value="Logga in" onclick="javascript:login(); return false;">
 							</form>
+							<input type="button" value="Get session" onclick="javascript:getSession();return false;">
 						</div>
 					</div>
 
