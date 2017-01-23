@@ -33,7 +33,7 @@
 			var rollperson = {"namn":$("#namn").val()};
 			  $.ajax({
 			   type: "GET",
-			   url: "https://www.cusdec.se:6984/rollpersoner/_design/rollperson/byName?key='" + $("#namn").val() + "'",
+			   url: "https://www.cusdec.se:6984/rollpersoner/_design/rollperson/_view/byName?key='" + $("#namn").val() + "'",
 			   contentType: "application/json",
 			   data: null,
 			   success: function(data) {
